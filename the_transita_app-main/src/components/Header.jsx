@@ -129,7 +129,7 @@ const Header = () => {
       {/* Hero Content - Responsive */}
       <section className="relative z-10 px-4 sm:px-6 lg:px-8 xl:px-12 flex-1 flex items-end lg:items-start">
         {/* Desktop Hero */}
-        <div className="hidden lg:grid grid-cols-2 gap-8 pt-8 xl:pt-16 w-full">
+        <div className="hidden lg:grid grid-cols-2 gap-8 pt-4 xl:pt-16 w-full">
           <div className="flex flex-col gap-6 xl:gap-7 text-white">
             <h1 className="text-3xl lg:text-4xl xl:text-5xl font-medium leading-tight xl:leading-tight lg:w-lg w-full">
               Make Your Daily Travel More Efficient.
