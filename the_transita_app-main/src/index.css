@@ -1,0 +1,23 @@
+@import "tailwindcss";
+@import "@fontsource/manrope";
+
+@import "tailwindcss";
+@import "@fontsource/manrope";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 👇 Add this custom animation */
+@keyframes scroll {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.scroll-animation {
+  animation: scroll 20s linear infinite;
+}
