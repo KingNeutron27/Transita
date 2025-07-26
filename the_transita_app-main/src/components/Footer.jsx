@@ -5,7 +5,6 @@ const Footer = () => {
     <main className="max-w-full mx-auto">
       <div className="px-5 md:px-20 bg-[#2A5243] pt-16 md:pt-24 pb-16 md:pb-20">
         <nav className="grid grid-cols-2 md:flex md:flex-row justify-between items-start gap-12 md:gap-8">
-          {/* Logo and Tagline Section */}
           <div className="flex flex-col items-start gap-4 md:gap-6 col-span-2 md:col-span-1">
             <div className="w-16 h-16 md:w-20 md:h-20 bg-white rounded-full flex items-center justify-center">
               <img src={logo} alt="logo" className="w-10 h-10 md:w-12 md:h-12" />
@@ -53,7 +52,6 @@ const Footer = () => {
 
           {/* Empty Fourth Column for Balance */}
           <div className="hidden md:flex flex-col gap-4 md:gap-6 text-white">
-            {/* Empty for visual balance */}
           </div>
         </nav>
       </div>

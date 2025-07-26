@@ -11,7 +11,6 @@ import warning from "../assets/images/warning-sign.png";
 const Features = () => {
   return (
     <main className="max-w-[1250px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12 py-8 md:py-6 lg:py-6 items-center flex flex-col gap-8 ">
-      {/* Title */}
       <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-center">
         Our Features
       </h1>
@@ -71,8 +70,7 @@ const Features = () => {
       <button className="bg-[#003366] hover:bg-[#001F4D] py-3 md:py-4 px-8 md:px-12 lg:px-16 text-white rounded-lg cursor-pointer font-semibold transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg text-base md:text-lg">
         Find routes
       </button>
-      
-      {/* Map Image */}
+
       <div className="w-full rounded-lg overflow-hidden shadow-lg">
         <img
           src={map}

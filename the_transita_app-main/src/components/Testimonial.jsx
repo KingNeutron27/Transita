@@ -3,7 +3,6 @@ import aprostrophe from "../assets/images/aprostophe.png";
 import { testimonialData } from "../data/db";
 
 const Testimonial = () => {
-  // Double the testimonials for smooth loop
   const loopedTestimonials = [...testimonialData, ...testimonialData];
 
   return (
