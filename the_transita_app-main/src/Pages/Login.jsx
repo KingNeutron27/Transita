@@ -3,7 +3,6 @@ import { Eye, EyeOff, Mail, Lock, ArrowRight, User } from "lucide-react";
 import signimg from "../assets/images/signimg.png";
 import logo from "../assets/images/logo.png";
 import { FcGoogle } from "react-icons/fc";
-import { FaFacebook } from "react-icons/fa";
 import { loginWithFirebase, loginWithGoogle, handleGoogleRedirectResult } from "../FirebaseConfig";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
@@ -175,7 +174,7 @@ const Login = () => {
               <button 
                 type="submit"
                 disabled={loading || googleLoading}
-                className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold py-2.5 sm:py-3 px-6 rounded-xl transition-all duration-200 transform hover:scale-[1.02] focus:ring-4 focus:ring-blue-200 shadow-lg flex items-center justify-center gap-2 text-sm sm:text-base disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold py-2.5 sm:py-3 px-6 rounded-xl transition-all duration-200 transform hover:scale-[1.02] focus:ring-4 focus:ring-blue-200 shadow-lg flex items-center justify-center gap-2 text-sm sm:text-base disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none cursor-pointer"
               >
                 {loading ? (
                   <>
@@ -194,7 +193,7 @@ const Login = () => {
                 type="button"
                 onClick={() => navigate('/signup')}
                 disabled={loading || googleLoading}
-                className="w-full border-2 border-gray-300 hover:border-gray-400 text-gray-700 font-semibold py-2.5 sm:py-3 px-6 rounded-xl transition-all duration-200 hover:bg-gray-50 flex items-center justify-center gap-2 text-sm sm:text-base disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full border-2 border-gray-300 hover:border-gray-400 text-gray-700 font-semibold py-2.5 sm:py-3 px-6 rounded-xl transition-all duration-200 hover:bg-gray-50 flex items-center justify-center gap-2 text-sm sm:text-base disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
               >
                 <User className="w-4 h-4" />
                 Create Account
@@ -215,12 +214,12 @@ const Login = () => {
           </div>
 
           {/* Social Login Buttons */}
-          <div className="grid grid-cols-2 gap-2 sm:gap-3">
+          <div className="grid grid-cols-1 gap-1">
             <button 
               type="button"
               onClick={handleGoogleLogin}
               disabled={loading || googleLoading}
-              className="flex items-center justify-center gap-2 py-2.5 sm:py-3 px-4 border border-gray-300 rounded-xl hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex items-center justify-center gap-2 py-2.5 sm:py-3 px-4 border border-gray-300 rounded-xl hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
             >
               {googleLoading ? (
                 <div className="animate-spin rounded-full h-4 w-4 border-2 border-gray-400 border-t-transparent"></div>
@@ -230,15 +229,6 @@ const Login = () => {
               <span className="text-xs sm:text-sm font-medium text-gray-700">
                 {googleLoading ? 'Loading...' : 'Google'}
               </span>
-            </button>
-            
-            <button 
-              type="button"
-              disabled={loading || googleLoading}
-              className="flex items-center justify-center gap-2 py-2.5 sm:py-3 px-4 border border-gray-300 rounded-xl hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              <FaFacebook className="w-4 h-4 sm:w-5 sm:h-5" fill="#1877F2" />
-              <span className="text-xs sm:text-sm font-medium text-gray-700">Facebook</span>
             </button>
           </div>
         </div>
