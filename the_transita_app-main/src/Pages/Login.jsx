@@ -1,12 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Eye, EyeOff, Mail, Lock, ArrowRight, User } from "lucide-react";
 import signimg from "../assets/images/signimg.png";
 import logo from "../assets/images/logo.png";
 import { FcGoogle } from "react-icons/fc";
-import { loginWithFirebase, loginWithGoogle, handleGoogleRedirectResult } from "../FirebaseConfig";
+import { loginWithFirebase, loginWithGoogle } from "../FirebaseConfig";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-
 
 const Login = () => {
   const [loading, setLoading] = useState(false);
@@ -18,20 +17,7 @@ const Login = () => {
     password: ""
   });
 
-  const navigate = useNavigate()
-
-  // Handle Google redirect result 
-  useEffect(() => {
-    const handleRedirect = async () => {
-      try {
-        await handleGoogleRedirectResult();
-      } catch (error) {
-        console.error('Error handling redirect:', error);
-      }
-    };
-
-    handleRedirect();
-  }, []);
+  const navigate = useNavigate();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -40,20 +26,18 @@ const Login = () => {
       [name]: value
     }));
   };
-  
+
   const userAuth = async (e) => {
-    e.preventDefault(); 
+    e.preventDefault();
     const { email, password } = formData;
-    
+
     if (!email || !password) {
       return toast.error('Please fill all inputs');
     }
-    
+
     try {
       setLoading(true);
       await loginWithFirebase(email, password);
-      
-      // Clear form after successful login
       setFormData({
         email: '',
         password: '',
@@ -76,10 +60,8 @@ const Login = () => {
     }
   };
 
-
   return (
     <main className="min-h-screen flex flex-col lg:flex-row bg-gradient-to-br from-slate-50 to-blue-50">
-      {/* Left side - Form */}
       <div className="flex flex-col w-full lg:w-1/2 p-4 sm:p-6 md:p-8 lg:p-16 justify-center order-2 lg:order-1">
         <div className="max-w-md w-full mx-auto">
           <div className="hidden lg:flex items-center gap-3 mb-8 md:mb-12">
@@ -88,8 +70,7 @@ const Login = () => {
               Transita
             </span>
           </div>
-          
-          {/* Header */}
+
           <div className="mb-6 md:mb-8">
             <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-blue-600 to-blue-700 bg-clip-text text-transparent">
               Welcome back
@@ -98,9 +79,8 @@ const Login = () => {
               Please sign in to your account to continue
             </p>
           </div>
-          
+
           <form onSubmit={userAuth} className="space-y-4 sm:space-y-6">
-            {/* Email */}
             <div className="space-y-2">
               <label htmlFor="email" className="block text-sm font-semibold text-gray-700">
                 Email address
@@ -120,7 +100,6 @@ const Login = () => {
               </div>
             </div>
 
-            {/* Password */}
             <div className="space-y-2">
               <label htmlFor="password" className="block text-sm font-semibold text-gray-700">
                 Password
@@ -148,7 +127,6 @@ const Login = () => {
               </div>
             </div>
 
-            {/* Remember me and Forgot password */}
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-0">
               <label className="flex items-center gap-2 cursor-pointer">
                 <input
@@ -160,18 +138,18 @@ const Login = () => {
                 />
                 <span className="text-sm text-gray-700">Remember me</span>
               </label>
-              <button 
+              <button
                 type="button"
                 disabled={loading || googleLoading}
+                onClick={() => navigate('/resetpassword')}
                 className="text-sm text-blue-600 hover:text-blue-700 font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Forgot password?
               </button>
             </div>
 
-            {/* Action Buttons */}
             <div className="space-y-3">
-              <button 
+              <button
                 type="submit"
                 disabled={loading || googleLoading}
                 className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold py-2.5 sm:py-3 px-6 rounded-xl transition-all duration-200 transform hover:scale-[1.02] focus:ring-4 focus:ring-blue-200 shadow-lg flex items-center justify-center gap-2 text-sm sm:text-base disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none cursor-pointer"
@@ -188,8 +166,8 @@ const Login = () => {
                   </>
                 )}
               </button>
-              
-              <button 
+
+              <button
                 type="button"
                 onClick={() => navigate('/signup')}
                 disabled={loading || googleLoading}
@@ -201,7 +179,6 @@ const Login = () => {
             </div>
           </form>
 
-          {/* Social Login Divider */}
           <div className="relative my-4 sm:my-6">
             <div className="absolute inset-0 flex items-center">
               <div className="w-full border-t border-gray-300"></div>
@@ -213,9 +190,8 @@ const Login = () => {
             </div>
           </div>
 
-          {/* Social Login Buttons */}
           <div className="grid grid-cols-1 gap-1">
-            <button 
+            <button
               type="button"
               onClick={handleGoogleLogin}
               disabled={loading || googleLoading}
@@ -233,20 +209,18 @@ const Login = () => {
           </div>
         </div>
       </div>
-      
-      {/* Right side - Image */}
+
       <div className="w-full lg:w-1/2 relative order-1 lg:order-2">
-        {/* Mobile Logo */}
         <div className="flex lg:hidden items-center justify-center gap-2 py-4 bg-gradient-to-r from-blue-600 to-blue-700">
           <img src={logo} alt="Transita logo" className="h-10 sm:h-12" />
           <span className="text-white font-bold text-base sm:text-lg">Transita</span>
         </div>
-        
+
         <div className="relative h-64 sm:h-80 md:h-96 lg:h-full">
-          <img 
-            src={signimg} 
-            alt="illustration" 
-            className="object-cover object-center w-full h-full lg:max-h-[120vh]" 
+          <img
+            src={signimg}
+            alt="illustration"
+            className="object-cover object-center w-full h-full lg:max-h-[120vh]"
           />
         </div>
       </div>

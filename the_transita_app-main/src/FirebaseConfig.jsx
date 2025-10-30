@@ -22,7 +22,7 @@ const firebaseConfig = {
   measurementId: 'G-YJDF3RFY7M' 
 };
 
-
+console.log(firebaseConfig.apiKey)
 
 
 // Initialize Firebase

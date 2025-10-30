@@ -4,12 +4,12 @@ import logo from "../assets/images/logo.png";
 import { signOut, onAuthStateChanged } from "firebase/auth";
 import { auth } from "../FirebaseConfig";
 import { toast } from "react-toastify";
-import { User, LogOut, ChevronDown } from "lucide-react";
+import { User, LogOut, ChevronDown, Settings, Bell, MapPin } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
-const Header = () => {
+const Header = ({ user: propUser }) => {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [user, setUser] = useState(null);
+  // const [user, setUser] = useState(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
@@ -19,12 +19,7 @@ const Header = () => {
 
   const menuItems = ["Home", "Traffic updates", "Parking finder", "Transit options"];
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
-    });
-    return () => unsubscribe();
-  }, []);
+  const user = propUser
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -33,7 +28,6 @@ const Header = () => {
       }
     };
 
-    // Changed from 'click' to 'mousedown' to fix desktop logout issue
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
@@ -49,6 +43,31 @@ const Header = () => {
     }
   };
 
+  const handleProfileAction = (action) => {
+    setDropdownOpen(false);
+    
+    switch(action) {
+      case 'profile':
+        // Navigate to profile page
+        navigate('/profile');
+        break;
+      case 'settings':
+        // Navigate to settings page
+        navigate('/settings');
+        break;
+      case 'notifications':
+        // Navigate to notifications page
+        navigate('/notifications');
+        break;
+      case 'saved-routes':
+        // Navigate to saved routes page
+        navigate('/saved-routes');
+        break;
+      default:
+        break;
+    }
+  };
+
   const getUserDisplayName = () => {
     if (user?.displayName) return user.displayName;
     if (user?.email) return user.email.split("@")[0];
@@ -56,8 +75,7 @@ const Header = () => {
   };
 
   const getUserAvatar = () => {
-    if (user?.photoURL) return user.photoURL;
-    return null;
+    return user?.photoURL || null;
   };
 
   return (
@@ -73,7 +91,7 @@ const Header = () => {
           <div className="flex flex-row justify-between w-full items-center bg-white px-4 xl:px-8 py-4 rounded-4xl shadow-lg">
             <div className="flex flex-row items-center gap-2">
               <img src={logo} className="w-8 h-8 xl:w-10 xl:h-10 rounded-full border-2 border-white transition-transform duration-300 hover:scale-110" alt="logo" />
-              <span className="font-medium text-sm xl:text-base">Transita</span>
+              <span className="font-medium text-sm xl:text-xl">Transita</span>
             </div>
 
             <ul className="flex flex-row gap-4 xl:gap-7 items-center text-sm xl:text-lg">
@@ -88,48 +106,84 @@ const Header = () => {
             </ul>
 
             {user ? (
-              <div className="relative" ref={dropdownRef}>
-                <button
-                  onClick={toggleDropdown}
-                  className="flex items-center gap-2 xl:gap-3 py-2 px-3 xl:px-4 rounded-lg bg-gray-50 hover:bg-gray-100 transition-all duration-300 ease-out hover:shadow-md"
-                >
-                  <div className="flex items-center gap-2">
-                    {getUserAvatar() ? (
-                      <img
-                        src={getUserAvatar()}
-                        alt="Profile"
-                        className="w-7 h-7 xl:w-8 xl:h-8 rounded-full object-cover border-2 border-gray-200"
-                      />
-                    ) : (
-                      <div className="w-7 h-7 xl:w-8 xl:h-8 rounded-full bg-[#003366] flex items-center justify-center">
-                        <User className="w-4 h-4 xl:w-5 xl:h-5 text-white" />
-                      </div>
-                    )}
-                    <span className="text-sm xl:text-base font-medium text-gray-700 max-w-24 xl:max-w-32 truncate">
-                      {getUserDisplayName()}
-                    </span>
-                  </div>
-                  <ChevronDown className={`w-4 h-4 text-gray-500 transition-transform duration-200 ${dropdownOpen ? "rotate-180" : ""}`} />
-                </button>
-
-                {dropdownOpen && (
-                  <div className="absolute right-0 top-full mt-2 w-48 xl:w-56 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50">
-                    <div className="px-4 py-2 border-b border-gray-100">
-                      <p className="text-sm font-medium text-gray-900 truncate">{getUserDisplayName()}</p>
-                      <p className="text-xs text-gray-500 truncate">{user.email}</p>
+              <div className="flex items-center gap-3">
+                {/* User Profile Dropdown */}
+                <div className="relative" ref={dropdownRef}>
+                  <button
+                    onClick={toggleDropdown}
+                    className="flex items-center gap-2 xl:gap-3 py-2 px-3 xl:px-4 rounded-lg bg-gray-50 hover:bg-gray-100 transition-all duration-300 ease-out hover:shadow-md"
+                  >
+                    <div className="flex items-center gap-2">
+                      {getUserAvatar() ? (
+                        <img
+                          src={getUserAvatar()}
+                          alt="Profile"
+                          className="w-7 h-7 xl:w-8 xl:h-8 rounded-full object-cover border-2 border-gray-200"
+                          referrerPolicy="no-referrer"
+                        />
+                      ) : (
+                        <div className="w-7 h-7 xl:w-8 xl:h-8 rounded-full bg-[#003366] flex items-center justify-center">
+                          <User className="w-4 h-4 xl:w-5 xl:h-5 text-white" />
+                        </div>
+                      )}
+                      <span className="text-sm xl:text-base font-medium text-gray-700 max-w-24 xl:max-w-32 truncate">
+                        {getUserDisplayName()}
+                      </span>
                     </div>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleLogout();
-                      }}
-                      className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-2 transition-colors cursor-pointer"
-                    >
-                      <LogOut className="w-4 h-4" />
-                      Sign Out
-                    </button>
-                  </div>
-                )}
+                    <ChevronDown className={`w-4 h-4 text-gray-500 transition-transform duration-200 ${dropdownOpen ? "rotate-180" : ""}`} />
+                  </button>
+
+                  {dropdownOpen && (
+                    <div className="absolute right-0 top-full mt-2 w-48 xl:w-56 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50">
+                      <div className="px-4 py-2 border-b border-gray-100">
+                        <p className="text-sm font-medium text-gray-900 truncate">{getUserDisplayName()}</p>
+                        <p className="text-xs text-gray-500 truncate">{user.email}</p>
+                      </div>
+                      
+                      {/* Profile Options */}
+                      <button
+                        onClick={() => handleProfileAction('profile')}
+                        className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-2 transition-colors cursor-pointer"
+                      >
+                        <User className="w-4 h-4" />
+                        View Profile
+                      </button>
+                      
+                      <button
+                        onClick={() => handleProfileAction('saved-routes')}
+                        className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-2 transition-colors cursor-pointer"
+                      >
+                        <MapPin className="w-4 h-4" />
+                        Saved Routes
+                      </button>
+                      
+                      <button
+                        onClick={() => handleProfileAction('notifications')}
+                        className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-2 transition-colors cursor-pointer"
+                      >
+                        <Bell className="w-4 h-4" />
+                        Notifications
+                      </button>
+                      
+                      <button
+                        onClick={() => handleProfileAction('settings')}
+                        className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-2 transition-colors cursor-pointer"
+                      >
+                        <Settings className="w-4 h-4" />
+                        Settings
+                      </button>
+                    </div>
+                  )}
+                </div>
+
+                {/* Sign Out Button */}
+                <button
+                  onClick={handleLogout}
+                  className="flex items-center gap-2 text-white bg-red-500 hover:bg-red-600 py-2 px-4 xl:px-6 rounded-lg cursor-pointer transition-all duration-300 ease-out hover:shadow-lg hover:transform hover:scale-105 hover:shadow-red-500/25 text-sm xl:text-base"
+                >
+                  <LogOut className="w-4 h-4" />
+                  Sign Out
+                </button>
               </div>
             ) : (
               <a
@@ -147,14 +201,16 @@ const Header = () => {
       <header className="lg:hidden flex items-center justify-between p-4 sm:p-6 relative z-10">
         <div className="flex items-center space-x-2 sm:space-x-3">
           <img src={logo} className="w-8 h-8 sm:w-10 sm:h-10 rounded-full object-cover" alt="Transita logo" />
-          <span className="text-white font-semibold text-base sm:text-lg">Transita</span>
+          <span className="text-white font-semibold text-md sm:text-xl">Transita</span>
         </div>
 
         <div className="flex items-center gap-3">
           {user && (
             <div className="flex items-center gap-2">
               {getUserAvatar() ? (
-                <img src={getUserAvatar()} alt="Profile" className="w-8 h-8 sm:w-9 sm:h-9 rounded-full object-cover border-2 border-white/50" />
+                <img 
+                src={getUserAvatar()} alt="Profile" className="w-8 h-8 sm:w-9 sm:h-9 rounded-full object-cover border-2 border-white/50" 
+                referrerPolicy="no-referrer" />
               ) : (
                 <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center border border-white/30">
                   <User className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
@@ -198,7 +254,8 @@ const Header = () => {
                 <div className="mb-6 sm:mb-8 p-4 bg-gray-50 rounded-lg">
                   <div className="flex items-center gap-3 mb-3">
                     {getUserAvatar() ? (
-                      <img src={getUserAvatar()} alt="Profile" className="w-12 h-12 rounded-full object-cover border-2 border-gray-200" />
+                      <img src={getUserAvatar()} alt="Profile" className="w-12 h-12 rounded-full object-cover border-2 border-gray-200"
+                      referrerPolicy="no-referrer" />
                     ) : (
                       <div className="w-12 h-12 rounded-full bg-[#003366] flex items-center justify-center">
                         <User className="w-6 h-6 text-white" />
@@ -242,10 +299,10 @@ const Header = () => {
       <section className="relative z-10 px-4 sm:px-6 lg:px-8 xl:px-12 flex-1 flex items-end lg:items-start">
         <div className="hidden lg:grid grid-cols-2 gap-8 pt-4 xl:pt-16 w-full">
           <div className="flex flex-col gap-6 xl:gap-7 text-white">
-            <h1 className="text-3xl lg:text-4xl xl:text-5xl font-medium leading-tight xl:leading-tight lg:w-lg w-full">
+            <h1 className="text-3xl lg:text-6xl font-medium leading-tight lg:leading-xl lg:w-xl w-full">
               Make Your Daily Travel More Efficient.
             </h1>
-            <p className="text-lg xl:text-xl leading-relaxed">
+            <p className="text-lg lg:text-2xl leading-relaxed">
               Live insights on traffic flow, parking space availability and smart transport alternatives curated to streamline your urban journey.
             </p>
             <div>

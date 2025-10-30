@@ -7,11 +7,11 @@ import Aboutus from "../components/Aboutus";
 import Testimonial from "../components/Testimonial";
 import Footer from "../components/Footer";
 
-const Home = () => {
+const Home = ({user}) => {
   return (
     <>
       <main>
-        <Header />
+        <Header user={user} />
         <Features />
         <WhyTransita />
         <Questions />

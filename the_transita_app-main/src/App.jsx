@@ -22,44 +22,41 @@ const App = () => {
   // Define public routes that don't require authentication
   const publicRoutes = ['/login', '/signup', '/resetpassword', '/enterResetPassword', '/mysign'];
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
-      console.log('Auth state changed:', currentUser ? 'logged in' : 'logged out');
-      
-      setUser(currentUser);
-      setLoading(false);
+  // App.js - Enhanced auth state handling
+useEffect(() => {
+  const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+    console.log('Auth state changed:', currentUser ? `User ${currentUser.email} logged in` : 'No user logged in');
+    
+    setUser(currentUser);
+    setLoading(false);
 
-      const currentPath = location.pathname;
+    const currentPath = location.pathname;
 
-      if (currentUser) {
-        // User is logged in
-        console.log('User details:', {
-          uid: currentUser.uid,
-          email: currentUser.email,
-          displayName: currentUser.displayName,
-          photoURL: currentUser.photoURL
-        });
-
-        // If user is on a public route (like login/signup), redirect to home
-        if (publicRoutes.includes(currentPath)) {
-          console.log('Redirecting authenticated user to home');
-          navigate('/', { replace: true });
-        }
-      } else {
-        // User is not logged in
-        console.log('User logged out');
-
-        // If user is trying to access a protected route, redirect to login
-        if (!publicRoutes.includes(currentPath)) {
-          console.log('Redirecting unauthenticated user to login');
-          navigate('/login', { replace: true });
-        }
+    if (currentUser) {
+      console.log('Authenticated user detected, current path:', currentPath);
+      if (publicRoutes.includes(currentPath)) {
+        console.log('Redirecting authenticated user to home');
+        navigate('/', { replace: true });
       }
-    });
+    } else {
+      console.log('No authenticated user, current path:', currentPath);
+      if (!publicRoutes.includes(currentPath)) {
+        console.log('Redirecting unauthenticated user to login');
+        navigate('/login', { replace: true });
+      }
+    }
+  }, (error) => {
+    console.error('Auth state error:', error);
+    setLoading(false);
+    toast.error('Authentication error. Please try again.');
+    navigate('/login', { replace: true });
+  });
 
-    // Cleanup subscription on unmount
-    return () => unsubscribe();
-  }, [navigate, location.pathname]);
+  return () => {
+    console.log('Cleaning up auth listener');
+    unsubscribe();
+  };
+}, [navigate, location.pathname]);
 
   // Show loading spinner while determining auth state
   if (loading) {
@@ -75,7 +72,7 @@ const App = () => {
 
   return (
     <Routes>
-      <Route path="/" element={<Home />} />
+      <Route path="/" element={<Home user={user} />} />
       <Route path="/signup" element={<Signup />} />
       <Route path="/token" element={<Token />} />
       <Route path="/verified" element={<Verified />} />
