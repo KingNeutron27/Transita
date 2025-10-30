@@ -25,7 +25,6 @@ const App = () => {
   // App.js - Enhanced auth state handling
 useEffect(() => {
   const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
-    console.log('Auth state changed:', currentUser ? `User ${currentUser.email} logged in` : 'No user logged in');
     
     setUser(currentUser);
     setLoading(false);
@@ -33,15 +32,11 @@ useEffect(() => {
     const currentPath = location.pathname;
 
     if (currentUser) {
-      console.log('Authenticated user detected, current path:', currentPath);
       if (publicRoutes.includes(currentPath)) {
-        console.log('Redirecting authenticated user to home');
         navigate('/', { replace: true });
       }
     } else {
-      console.log('No authenticated user, current path:', currentPath);
       if (!publicRoutes.includes(currentPath)) {
-        console.log('Redirecting unauthenticated user to login');
         navigate('/login', { replace: true });
       }
     }
@@ -53,7 +48,6 @@ useEffect(() => {
   });
 
   return () => {
-    console.log('Cleaning up auth listener');
     unsubscribe();
   };
 }, [navigate, location.pathname]);

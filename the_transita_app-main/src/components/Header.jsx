@@ -9,7 +9,6 @@ import { useNavigate } from "react-router-dom";
 
 const Header = ({ user: propUser }) => {
   const [menuOpen, setMenuOpen] = useState(false);
-  // const [user, setUser] = useState(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
@@ -48,19 +47,15 @@ const Header = ({ user: propUser }) => {
     
     switch(action) {
       case 'profile':
-        // Navigate to profile page
         navigate('/profile');
         break;
       case 'settings':
-        // Navigate to settings page
         navigate('/settings');
         break;
       case 'notifications':
-        // Navigate to notifications page
         navigate('/notifications');
         break;
       case 'saved-routes':
-        // Navigate to saved routes page
         navigate('/saved-routes');
         break;
       default:
@@ -80,9 +75,11 @@ const Header = ({ user: propUser }) => {
 
   return (
     <main
-      className="relative bg-cover bg-center min-h-screen w-full flex flex-col"
+      className="relative bg-cover bg-center bg-no-repeat w-full flex flex-col"
       style={{
-        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.3)), url(${bgImg})`
+        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.3)), url(${bgImg})`,
+        minHeight: '100vh',
+        minHeight: '100dvh' // Dynamic viewport height for mobile browsers
       }}
     >
       {/* Desktop Navigation */}
@@ -107,7 +104,6 @@ const Header = ({ user: propUser }) => {
 
             {user ? (
               <div className="flex items-center gap-3">
-                {/* User Profile Dropdown */}
                 <div className="relative" ref={dropdownRef}>
                   <button
                     onClick={toggleDropdown}
@@ -119,7 +115,6 @@ const Header = ({ user: propUser }) => {
                           src={getUserAvatar()}
                           alt="Profile"
                           className="w-7 h-7 xl:w-8 xl:h-8 rounded-full object-cover border-2 border-gray-200"
-                          referrerPolicy="no-referrer"
                         />
                       ) : (
                         <div className="w-7 h-7 xl:w-8 xl:h-8 rounded-full bg-[#003366] flex items-center justify-center">
@@ -140,7 +135,6 @@ const Header = ({ user: propUser }) => {
                         <p className="text-xs text-gray-500 truncate">{user.email}</p>
                       </div>
                       
-                      {/* Profile Options */}
                       <button
                         onClick={() => handleProfileAction('profile')}
                         className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-2 transition-colors cursor-pointer"
@@ -176,7 +170,6 @@ const Header = ({ user: propUser }) => {
                   )}
                 </div>
 
-                {/* Sign Out Button */}
                 <button
                   onClick={handleLogout}
                   className="flex items-center gap-2 text-white bg-red-500 hover:bg-red-600 py-2 px-4 xl:px-6 rounded-lg cursor-pointer transition-all duration-300 ease-out hover:shadow-lg hover:transform hover:scale-105 hover:shadow-red-500/25 text-sm xl:text-base"
@@ -198,7 +191,7 @@ const Header = ({ user: propUser }) => {
       </div>
 
       {/* Mobile/Tablet Header */}
-      <header className="lg:hidden flex items-center justify-between p-4 sm:p-6 relative z-10">
+      <header className="lg:hidden flex items-center justify-between p-4 sm:p-6 relative z-10 flex-shrink-0">
         <div className="flex items-center space-x-2 sm:space-x-3">
           <img src={logo} className="w-8 h-8 sm:w-10 sm:h-10 rounded-full object-cover" alt="Transita logo" />
           <span className="text-white font-semibold text-md sm:text-xl">Transita</span>
@@ -209,8 +202,11 @@ const Header = ({ user: propUser }) => {
             <div className="flex items-center gap-2">
               {getUserAvatar() ? (
                 <img 
-                src={getUserAvatar()} alt="Profile" className="w-8 h-8 sm:w-9 sm:h-9 rounded-full object-cover border-2 border-white/50" 
-                referrerPolicy="no-referrer" />
+                  src={getUserAvatar()} 
+                  alt="Profile" 
+                  className="w-8 h-8 sm:w-9 sm:h-9 rounded-full object-cover border-2 border-white/50" 
+                  referrerPolicy="no-referrer" 
+                />
               ) : (
                 <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center border border-white/30">
                   <User className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
@@ -242,7 +238,7 @@ const Header = ({ user: propUser }) => {
       {menuOpen && (
         <>
           <div className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden" onClick={toggleMenu} />
-          <nav className="fixed top-0 right-0 h-screen w-full max-w-sm bg-white shadow-xl z-50 transform transition-transform duration-300 ease-in-out lg:hidden">
+          <nav className="fixed top-0 right-0 h-screen w-full max-w-sm bg-white shadow-xl z-50 transform transition-transform duration-300 ease-in-out lg:hidden overflow-y-auto">
             <div className="p-4 sm:p-6">
               <div className="flex justify-end mb-6 sm:mb-8">
                 <button className="text-2xl sm:text-3xl text-gray-600 hover:text-gray-800 focus:outline-none p-2 min-w-[44px] min-h-[44px]" onClick={toggleMenu}>
@@ -254,14 +250,18 @@ const Header = ({ user: propUser }) => {
                 <div className="mb-6 sm:mb-8 p-4 bg-gray-50 rounded-lg">
                   <div className="flex items-center gap-3 mb-3">
                     {getUserAvatar() ? (
-                      <img src={getUserAvatar()} alt="Profile" className="w-12 h-12 rounded-full object-cover border-2 border-gray-200"
-                      referrerPolicy="no-referrer" />
+                      <img 
+                        src={getUserAvatar()} 
+                        alt="Profile" 
+                        className="w-12 h-12 rounded-full object-cover border-2 border-gray-200"
+                        referrerPolicy="no-referrer" 
+                      />
                     ) : (
                       <div className="w-12 h-12 rounded-full bg-[#003366] flex items-center justify-center">
                         <User className="w-6 h-6 text-white" />
                       </div>
                     )}
-                    <div>
+                    <div className="min-w-0 flex-1">
                       <p className="font-medium text-gray-900 truncate">{getUserDisplayName()}</p>
                       <p className="text-sm text-gray-500 truncate">{user.email}</p>
                     </div>
@@ -277,7 +277,7 @@ const Header = ({ user: propUser }) => {
                 ))}
                 {user ? (
                   <li className="pt-4">
-                    <button onClick={handleLogout} className="flex items-center gap-2 w-full bg-red-500 hover:bg-red-600 text-white font-medium px-6 py-3 rounded-lg transition-colors shadow-md text-center">
+                    <button onClick={handleLogout} className="flex items-center justify-center gap-2 w-full bg-red-500 hover:bg-red-600 text-white font-medium px-6 py-3 rounded-lg transition-colors shadow-md text-center">
                       <LogOut className="w-4 h-4" />
                       Sign Out
                     </button>
@@ -296,7 +296,7 @@ const Header = ({ user: propUser }) => {
       )}
 
       {/* Hero Section */}
-      <section className="relative z-10 px-4 sm:px-6 lg:px-8 xl:px-12 flex-1 flex items-end lg:items-start">
+      <section className="relative z-10 px-4 sm:px-6 lg:px-8 xl:px-12 flex-1 flex items-end lg:items-start flex-shrink-0">
         <div className="hidden lg:grid grid-cols-2 gap-8 pt-4 xl:pt-16 w-full">
           <div className="flex flex-col gap-6 xl:gap-7 text-white">
             <h1 className="text-3xl lg:text-6xl font-medium leading-tight lg:leading-xl lg:w-xl w-full">
@@ -314,7 +314,7 @@ const Header = ({ user: propUser }) => {
         </div>
 
         {/* Mobile Hero */}
-        <div className="lg:hidden text-white space-y-4 sm:space-y-6 pb-8 sm:pb-12 w-full">
+        <div className="lg:hidden text-white space-y-4 sm:space-y-6 pb-8 sm:pb-12 w-full max-w-full">
           <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold leading-tight">
             Make Your Daily Travel More Efficient.
           </h1>

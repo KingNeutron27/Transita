@@ -44,19 +44,19 @@ export const questionData = [
 
     export const testimonialData = [{
         subject: "\"No more guessing\"",
-        desc: "\"I used to leave work 30minutes early ‘just in case’ traffic got bad-now i get real time updates and know exactly when to leave. Thanks to transita\"",
+        desc: "\"I used to leave work 30minutes early ‘just in case’ traffic got bad-now I get real time updates and know exactly when to leave. Thanks to transita\"",
         img: test1,
         name: "Victoria",
         role: "Banker"
     }, {
         subject: "\"Parking without panic\"",
-        desc: "“Finding parking used to ruin my mornings. now i check map before leaving and park near my office without stress, its like the city suddenly got smarter”",
+        desc: "“Finding parking used to ruin my mornings. now I check map before leaving and park near my office without stress, its like the city suddenly got smarter”",
         img: test2,
         name: "Kayode",
         role: "Bolt driver"
     }, {
         subject: "\"Fire movement dede\"",
-        desc: "\"I used to leave work 30minutes early ‘just in case’ traffic got bad-now i get real time updates and know exactly when to leave. Thanks to transita\"",
+        desc: "\"I used to leave work 30minutes early ‘just in case’ traffic got bad-now I get real time updates and know exactly when to leave. Thanks to transita\"",
         img: test3,
         name: "Bunmi",
         role: "Content-Creator"
